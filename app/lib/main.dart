@@ -1,5 +1,4 @@
-import 'package:drkmode_app/poll.dart';
-import 'package:drkmode_common/poll_question.dart';
+import 'package:drkmode_app/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,26 +20,7 @@ class MyApp extends StatelessWidget {
         toggleableActiveColor: Colors.amber,
         brightness: Brightness.dark,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(
-            'Drk Mode',
-            style: TextStyle(
-              fontFamily: 'Barbaro',
-              fontSize: kToolbarHeight / 2,
-            ),
-          ),
-        ),
-        body: Padding(
-          padding: EdgeInsets.all(10),
-          child: PollQuestion(
-            poll: Poll(
-              'If you had to get rid of one Apple product, which would it be?',
-              ['iPhone', 'iPad', 'Apple Watch', 'Mac'],
-            ),
-          ),
-        ),
-      ),
+      home: const Home(),
     );
   }
 }

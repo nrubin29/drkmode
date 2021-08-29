@@ -12,6 +12,7 @@ dependencies:
     path: ../common
   flutter:
     sdk: flutter
+  http: ^0.13.3
 
 dev_dependencies:
   flutter_test:
