@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:drkmode_app/poll_question.dart';
 import 'package:drkmode_app/poll_responses.dart';
 import 'package:drkmode_common/poll_question.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -50,6 +51,15 @@ class _HomeState extends State<Home> {
             fontSize: kToolbarHeight / 2,
           ),
         ),
+        leading: kDebugMode
+            ? IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () async {
+                  await (await SharedPreferences.getInstance()).clear();
+                  _fetchPoll();
+                },
+              )
+            : null,
       ),
       body: RefreshIndicator(
         onRefresh: _fetchPoll,

@@ -9,45 +9,32 @@ class DrkModeCard extends StatelessWidget {
   const DrkModeCard({required this.title, required this.body, this.bottom});
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
+  Widget build(BuildContext context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  topRight: Radius.circular(5),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
-              child: Padding(
-                padding: EdgeInsets.all(5),
-                child: title,
-              ),
+              padding: EdgeInsets.all(5),
+              child: title,
             ),
-            body,
-            if (bottom != null)
-              Container(
+          ),
+          body,
+          if (bottom != null)
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  border: Border.all(color: Theme.of(context).primaryColor),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5),
-                  ),
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
                 child: bottom,
               ),
-          ],
-        ),
+            ),
+        ],
       );
 }

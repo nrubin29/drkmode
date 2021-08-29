@@ -37,7 +37,7 @@ class _PollResponsesState extends State<PollResponses> {
           children: [
             for (var option in widget.poll.options)
               Padding(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.symmetric(vertical: 5),
                 child: Stack(
                   children: [
                     Positioned.fill(
