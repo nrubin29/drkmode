@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:drkmode_app/poll_question.dart';
+import 'package:drkmode_app/poll_responses.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.all(10),
           child: ListView(
             children: [
-              if (_poll != null) PollQuestion(poll: _poll!),
+              if (_poll != null) PollResponses(poll: _poll!),
             ],
           ),
         ),

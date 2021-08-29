@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:drkmode_app/card.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
@@ -19,42 +20,21 @@ class _PollQuestionState extends State<PollQuestion> {
   PollOption? _selection;
 
   @override
-  Widget build(BuildContext context) => Container(
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Theme.of(context).primaryColor,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+  Widget build(BuildContext context) => DrkModeCard(
+        title: Row(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  topRight: Radius.circular(5),
-                ),
-              ),
-              child: Padding(
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  children: [
-                    Icon(Icons.poll, color: Colors.black),
-                    Expanded(
-                      child: Text(
-                        widget.poll.question,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
-                ),
+            Icon(Icons.poll, color: Colors.black),
+            Expanded(
+              child: Text(
+                widget.poll.question,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black),
               ),
             ),
+          ],
+        ),
+        body: Column(
+          children: [
             for (var option in widget.poll.options)
               RadioListTile<PollOption>(
                 value: option,
@@ -66,43 +46,33 @@ class _PollQuestionState extends State<PollQuestion> {
                 },
                 title: Text(option.value),
               ),
-            Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                border: Border.all(color: Theme.of(context).primaryColor),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
-                ),
+          ],
+        ),
+        bottom: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              onPressed: _selection != null
+                  ? () async {
+                      final request =
+                          VoteRequest(widget.poll.id, _selection!.value);
+                      final response = await post(
+                          Uri(
+                              scheme: 'http',
+                              host: 'localhost',
+                              port: 8080,
+                              path: 'vote'),
+                          body: json.encode(request.toJson()));
+                      print(response.body);
+                    }
+                  : null,
+              child: Text(
+                'Vote',
+                style: TextStyle(color: Colors.black),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: _selection != null
-                        ? () async {
-                            final request =
-                                VoteRequest(widget.poll.id, _selection!.value);
-                            final response = await post(
-                                Uri(
-                                    scheme: 'http',
-                                    host: 'localhost',
-                                    port: 8080,
-                                    path: 'vote'),
-                                body: json.encode(request.toJson()));
-                            print(response.body);
-                          }
-                        : null,
-                    child: Text(
-                      'Vote',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ButtonStyle(
-                      overlayColor: MaterialStateProperty.all(
-                          Colors.black.withOpacity(.25)),
-                    ),
-                  ),
-                ],
+              style: ButtonStyle(
+                overlayColor:
+                    MaterialStateProperty.all(Colors.black.withOpacity(.25)),
               ),
             ),
           ],
