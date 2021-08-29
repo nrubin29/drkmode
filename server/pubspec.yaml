@@ -1,0 +1,16 @@
+name: drkmode_server
+description: The server that powers the Drk Mode app.
+version: 0.0.0
+homepage: 'https://drkmodepodcast.com'
+publish_to: 'none'
+
+environment:
+  sdk: '>=2.10.0 <3.0.0'
+
+dependencies:
+  drkmode_common:
+    path: ../common
+  shelf: ^1.2.0
+
+dev_dependencies:
+  pedantic: ^1.9.0

@@ -1,0 +1,25 @@
+name: drkmode_app
+description: The official app for Drk Mode Podcast.
+homepage: 'https://drkmodepodcast.com'
+publish_to: 'none'
+version: 0.0.1+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  drkmode_common:
+    path: ../common
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Barbaro
+      fonts:
+        - asset: assets/barbaro.ttf
