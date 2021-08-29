@@ -28,7 +28,7 @@ class PollService {
         '?',
         [voteRequest.pollId, voteRequest.option]);
 
-    return Response.ok(json.encode({'success': result > 0}));
+    return Response.ok(json.encode(VoteResponse(result > 0).toJson()));
   }
 
   Router get router => _$PollServiceRouter(this);

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:drkmode_app/poll_question.dart';
 import 'package:drkmode_app/poll_responses.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home();
@@ -14,6 +16,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Poll? _poll;
+  var _voted = false;
 
   @override
   void initState() {
@@ -25,9 +28,14 @@ class _HomeState extends State<Home> {
     final response = await get(
         Uri(scheme: 'http', host: 'localhost', port: 8080, path: 'poll'));
     final poll = Poll.fromJson(json.decode(response.body));
+    final voted =
+        ((await SharedPreferences.getInstance()).getStringList('voted') ??
+                const <String>[])
+            .contains('${poll.id}');
 
     setState(() {
       _poll = poll;
+      _voted = voted;
     });
   }
 
@@ -49,7 +57,16 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.all(10),
           child: ListView(
             children: [
-              if (_poll != null) PollResponses(poll: _poll!),
+              if (_poll != null)
+                if (_voted)
+                  PollResponses(poll: _poll!)
+                else
+                  PollQuestion(
+                    poll: _poll!,
+                    onVote: () {
+                      _fetchPoll();
+                    },
+                  ),
             ],
           ),
         ),
