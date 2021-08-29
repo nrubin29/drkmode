@@ -13,11 +13,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.amber,
         toggleableActiveColor: Colors.amber,
+        accentColor: Colors.amber,
       ),
       darkTheme: ThemeData(
         primarySwatch: Colors.amber,
         primaryColor: Colors.amber,
         toggleableActiveColor: Colors.amber,
+        accentColor: Colors.amber,
         brightness: Brightness.dark,
       ),
       home: const Home(),
