@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drkmode_common/poll_question.dart';
+import 'package:drkmode_common/vote_request.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:sqflite_common/sqlite_api.dart';
@@ -15,6 +16,19 @@ class PollService {
   @Route.get('/poll')
   Future<Response> getPoll(Request request) async {
     return Response.ok(json.encode(await _getCurrentPoll()));
+  }
+
+  @Route.post('/vote')
+  Future<Response> vote(Request request) async {
+    final voteRequest =
+        VoteRequest.fromJson(json.decode(await request.readAsString()));
+
+    final result = await database.rawUpdate(
+        'UPDATE PollOption SET votes = votes + 1 WHERE poll_id = ? AND value = '
+        '?',
+        [voteRequest.pollId, voteRequest.option]);
+
+    return Response.ok(json.encode({'success': result > 0}));
   }
 
   Router get router => _$PollServiceRouter(this);

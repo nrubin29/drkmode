@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:drkmode_common/poll_question.dart';
+import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 
 /// Displays a [Poll] that the user can respond to.
 class PollQuestion extends StatefulWidget {
@@ -75,9 +79,20 @@ class _PollQuestionState extends State<PollQuestion> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      print('Vote pressed');
-                    },
+                    onPressed: _selection != null
+                        ? () async {
+                            final request =
+                                VoteRequest(widget.poll.id, _selection!.value);
+                            final response = await post(
+                                Uri(
+                                    scheme: 'http',
+                                    host: 'localhost',
+                                    port: 8080,
+                                    path: 'vote'),
+                                body: json.encode(request.toJson()));
+                            print(response.body);
+                          }
+                        : null,
                     child: Text(
                       'Vote',
                       style: TextStyle(color: Colors.black),
