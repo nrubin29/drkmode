@@ -12,7 +12,7 @@ class PollQuestion extends StatefulWidget {
 }
 
 class _PollQuestionState extends State<PollQuestion> {
-  String? _selection;
+  PollOption? _selection;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -52,7 +52,7 @@ class _PollQuestionState extends State<PollQuestion> {
               ),
             ),
             for (var option in widget.poll.options)
-              RadioListTile<String>(
+              RadioListTile<PollOption>(
                 value: option,
                 groupValue: _selection,
                 onChanged: (_) {
@@ -60,7 +60,7 @@ class _PollQuestionState extends State<PollQuestion> {
                     _selection = option;
                   });
                 },
-                title: Text(option),
+                title: Text(option.value),
               ),
             Container(
               decoration: BoxDecoration(
