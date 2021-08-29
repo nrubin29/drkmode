@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class DrkModeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget? leading;
+  final List<Widget>? actions;
 
-  const DrkModeAppBar({this.leading});
+  const DrkModeAppBar({this.leading, this.actions});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class DrkModeAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       leading: leading,
+      actions: actions,
     );
   }
 

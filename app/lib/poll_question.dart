@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:drkmode_app/card.dart';
+import 'package:drkmode_common/generic_response.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +66,8 @@ class _PollQuestionState extends State<PollQuestion> {
                               port: 8080,
                               path: 'vote'),
                           body: json.encode(request.toJson()));
-                      final response =
-                          VoteResponse.fromJson(json.decode(rawResponse.body));
+                      final response = GenericResponse.fromJson(
+                          json.decode(rawResponse.body));
 
                       if (response.success) {
                         final sharedPreferences =

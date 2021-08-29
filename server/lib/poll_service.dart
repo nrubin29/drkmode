@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:drkmode_common/generic_response.dart';
+import 'package:drkmode_common/poll_create.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:shelf/shelf.dart';
@@ -28,7 +30,35 @@ class PollService {
         '?',
         [voteRequest.pollId, voteRequest.option]);
 
-    return Response.ok(json.encode(VoteResponse(result > 0).toJson()));
+    return Response.ok(json.encode(GenericResponse(result > 0).toJson()));
+  }
+
+  @Route.post('/create')
+  Future<Response> create(Request request) async {
+    final createRequest =
+        PollCreateRequest.fromJson(json.decode(await request.readAsString()));
+
+    final result = await database.transaction((txn) async {
+      final pollId =
+          await txn.insert('Poll', {'question': createRequest.question});
+
+      if (pollId <= 0) {
+        return false;
+      }
+
+      for (final option in createRequest.options) {
+        final success = await txn
+            .insert('PollOption', {'value': option, 'poll_id': pollId});
+
+        if (success <= 0) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    return Response.ok(json.encode(GenericResponse(result).toJson()));
   }
 
   Router get router => _$PollServiceRouter(this);
