@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'dart:ui';
 
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:drkmode_app/drk_mode_appbar.dart';
 import 'package:drkmode_common/generic_response.dart';
 import 'package:drkmode_common/poll_create.dart';
@@ -14,6 +16,7 @@ class PollEditor extends StatefulWidget {
 class _PollEditorState extends State<PollEditor> {
   final _questionController = TextEditingController();
   final _optionControllers = <TextEditingController>[];
+  final _endController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class _PollEditorState extends State<PollEditor> {
               final request = PollCreateRequest(
                 _questionController.text,
                 _optionControllers.map((e) => e.text).toList(growable: false),
+                DateTime.parse(_endController.text),
               );
 
               final rawResponse = await post(
@@ -93,6 +97,18 @@ class _PollEditorState extends State<PollEditor> {
                     ],
                   ),
                 ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTime,
+                use24HourFormat: false,
+                controller: _endController,
+                firstDate: DateTime.now(),
+                lastDate: DateTime.now().add(Duration(days: 30)),
+                locale: PlatformDispatcher.instance.locale,
+                decoration: InputDecoration(
+                  labelText: 'End',
+                  border: OutlineInputBorder(),
+                ),
+              ),
             ],
           ),
         ),
@@ -103,6 +119,7 @@ class _PollEditorState extends State<PollEditor> {
   @override
   void dispose() {
     _questionController.dispose();
+    _endController.dispose();
 
     for (var optionController in _optionControllers) {
       optionController.dispose();

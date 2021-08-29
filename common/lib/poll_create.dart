@@ -6,8 +6,9 @@ part 'poll_create.g.dart';
 class PollCreateRequest {
   final String question;
   final List<String> options;
+  final DateTime end;
 
-  const PollCreateRequest(this.question, this.options);
+  const PollCreateRequest(this.question, this.options, this.end);
 
   factory PollCreateRequest.fromJson(Map<String, dynamic> json) =>
       _$PollCreateRequestFromJson(json);

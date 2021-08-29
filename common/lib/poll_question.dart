@@ -2,13 +2,20 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'poll_question.g.dart';
 
+DateTime fromMillis(value) => DateTime.fromMillisecondsSinceEpoch(value);
+
+int toMillis(DateTime value) => value.millisecondsSinceEpoch;
+
 @JsonSerializable()
 class Poll {
   final int id;
   final String question;
   final List<PollOption> options;
 
-  const Poll(this.id, this.question, this.options);
+  @JsonKey(fromJson: fromMillis, toJson: toMillis)
+  final DateTime end;
+
+  const Poll(this.id, this.question, this.options, this.end);
 
   factory Poll.fromJson(Map<String, dynamic> json) => _$PollFromJson(json);
 

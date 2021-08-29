@@ -39,8 +39,10 @@ class PollService {
         PollCreateRequest.fromJson(json.decode(await request.readAsString()));
 
     final result = await database.transaction((txn) async {
-      final pollId =
-          await txn.insert('Poll', {'question': createRequest.question});
+      final pollId = await txn.insert('Poll', {
+        'question': createRequest.question,
+        'end': createRequest.end.millisecondsSinceEpoch,
+      });
 
       if (pollId <= 0) {
         return false;

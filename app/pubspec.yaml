@@ -8,11 +8,13 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  date_time_picker: ^2.1.0
   drkmode_common:
     path: ../common
   flutter:
     sdk: flutter
   http: ^0.13.3
+  intl: ^0.17.0
   shared_preferences: ^2.0.7
 
 dev_dependencies:

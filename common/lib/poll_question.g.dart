@@ -12,12 +12,14 @@ Poll _$PollFromJson(Map<String, dynamic> json) => Poll(
       (json['options'] as List<dynamic>)
           .map((e) => PollOption.fromJson(e as Map<String, dynamic>))
           .toList(),
+      fromMillis(json['end']),
     );
 
 Map<String, dynamic> _$PollToJson(Poll instance) => <String, dynamic>{
       'id': instance.id,
       'question': instance.question,
       'options': instance.options,
+      'end': toMillis(instance.end),
     };
 
 PollOption _$PollOptionFromJson(Map<String, dynamic> json) => PollOption(
