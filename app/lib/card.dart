@@ -5,8 +5,10 @@ class DrkModeCard extends StatelessWidget {
   final Widget title;
   final Widget body;
   final Widget? bottom;
+  final Widget? belowBottom;
 
-  const DrkModeCard({required this.title, required this.body, this.bottom});
+  const DrkModeCard(
+      {required this.title, required this.body, this.bottom, this.belowBottom});
 
   @override
   Widget build(BuildContext context) => Column(
@@ -25,15 +27,18 @@ class DrkModeCard extends StatelessWidget {
           ),
           body,
           if (bottom != null)
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              padding: EdgeInsets.only(top: 5),
+              child: bottom,
+            ),
+          if (belowBottom != null)
             Padding(
               padding: EdgeInsets.only(top: 5),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                ),
-                child: bottom,
-              ),
+              child: belowBottom!,
             ),
         ],
       );

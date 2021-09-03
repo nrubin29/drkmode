@@ -6,6 +6,7 @@ import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Displays a [Poll] that the user can respond to.
@@ -21,6 +22,48 @@ class PollQuestion extends StatefulWidget {
 
 class _PollQuestionState extends State<PollQuestion> {
   PollOption? _selection;
+
+  String get _timeLeft {
+    var delta = widget.poll.end.difference(DateTime.now());
+    final components = <String>[];
+
+    if (delta.inDays > 0) {
+      components.add(Intl.plural(delta.inDays,
+          one: '${delta.inDays} day', other: '${delta.inDays} days'));
+      delta = delta - Duration(days: delta.inDays);
+    }
+
+    if (delta.inHours > 0) {
+      components.add(Intl.plural(delta.inHours,
+          one: '${delta.inHours} hour', other: '${delta.inHours} hours'));
+      delta = delta - Duration(hours: delta.inHours);
+    }
+
+    if (delta.inMinutes > 0) {
+      components.add(Intl.plural(delta.inMinutes,
+          one: '${delta.inMinutes} minute',
+          other: '${delta.inMinutes} minutes'));
+      delta = delta - Duration(minutes: delta.inMinutes);
+    }
+
+    if (delta.inSeconds > 0) {
+      components.add(Intl.plural(delta.inSeconds,
+          one: '${delta.inSeconds} second',
+          other: '${delta.inSeconds} seconds'));
+      delta = delta - Duration(seconds: delta.inSeconds);
+    }
+
+    if (components.length == 1) {
+      return components.single;
+    } else if (components.length == 2) {
+      return '${components[0]} and ${components[1]}';
+    }
+
+    components[components.length - 1] =
+        'and ${components[components.length - 1]}';
+
+    return components.join(', ');
+  }
 
   @override
   Widget build(BuildContext context) => DrkModeCard(
@@ -92,5 +135,6 @@ class _PollQuestionState extends State<PollQuestion> {
             ),
           ],
         ),
+        belowBottom: Text('Poll ends in $_timeLeft.'),
       );
 }
