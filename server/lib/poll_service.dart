@@ -65,13 +65,25 @@ class PollService {
 
   Router get router => _$PollServiceRouter(this);
 
+  /// Returns the current poll that should be displayed in the app.
+  ///
+  /// If there is an active poll, return that poll. Otherwise, return the latest
+  /// poll so that the app can show the results. If there are no polls, return
+  /// null.
   Future<Poll?> _getCurrentPoll() async {
     final now = DateTime.now().millisecondsSinceEpoch;
     final results = await database.query('Poll',
         columns: ['id'], where: 'end > ?', whereArgs: [now]);
 
     if (results.isEmpty) {
-      return null;
+      final lastPollResults = await database.query('Poll',
+          columns: ['id'], orderBy: 'end desc', limit: 1);
+
+      if (lastPollResults.isNotEmpty) {
+        return _getPoll(lastPollResults.first['id'] as int);
+      } else {
+        return null;
+      }
     }
 
     return _getPoll(results.first['id'] as int);

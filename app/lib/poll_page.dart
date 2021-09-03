@@ -56,7 +56,11 @@ class _PollPageState extends State<PollPage> {
       });
 
       _timer?.cancel();
-      _timer = Timer(poll.end.difference(DateTime.now()), _fetchPoll);
+      _timer = null;
+
+      if (!poll.isEnded) {
+        _timer = Timer(poll.end.difference(DateTime.now()), _fetchPoll);
+      }
     }
   }
 
@@ -86,7 +90,7 @@ class _PollPageState extends State<PollPage> {
                         'There is no active poll. Please check back later.',
                         textAlign: TextAlign.center,
                       )
-                    else if (_voted)
+                    else if (_voted || (_poll?.isEnded ?? false))
                       PollResponses(poll: _poll!)
                     else
                       PollQuestion(poll: _poll!, onVote: _fetchPoll),

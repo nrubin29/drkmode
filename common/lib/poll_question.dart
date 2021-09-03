@@ -15,6 +15,11 @@ class Poll {
   @JsonKey(fromJson: fromMillis, toJson: toMillis)
   final DateTime end;
 
+  bool get isEnded {
+    final now = DateTime.now();
+    return now.isAtSameMomentAs(end) || now.isAfter(end);
+  }
+
   const Poll(this.id, this.question, this.options, this.end);
 
   factory Poll.fromJson(Map<String, dynamic> json) => _$PollFromJson(json);
