@@ -16,6 +16,7 @@ class PollPage extends StatefulWidget {
 }
 
 class _PollPageState extends State<PollPage> {
+  var _fetched = false;
   Poll? _poll;
   var _voted = false;
 
@@ -26,18 +27,32 @@ class _PollPageState extends State<PollPage> {
   }
 
   Future<void> _fetchPoll() async {
+    setState(() {
+      _fetched = false;
+    });
+
     final response = await get(
         Uri(scheme: 'http', host: 'localhost', port: 8080, path: 'poll'));
-    final poll = Poll.fromJson(json.decode(response.body));
-    final voted =
-        ((await SharedPreferences.getInstance()).getStringList('voted') ??
-                const <String>[])
-            .contains('${poll.id}');
+    final responseObject = json.decode(response.body);
 
-    setState(() {
-      _poll = poll;
-      _voted = voted;
-    });
+    if (responseObject == null) {
+      setState(() {
+        _poll = null;
+        _fetched = true;
+      });
+    } else {
+      final poll = Poll.fromJson(json.decode(response.body));
+      final voted =
+          ((await SharedPreferences.getInstance()).getStringList('voted') ??
+                  const <String>[])
+              .contains('${poll.id}');
+
+      setState(() {
+        _poll = poll;
+        _voted = voted;
+        _fetched = true;
+      });
+    }
   }
 
   @override
@@ -54,26 +69,27 @@ class _PollPageState extends State<PollPage> {
               )
             : null,
       ),
-      body: RefreshIndicator(
-        onRefresh: _fetchPoll,
-        child: Padding(
-          padding: EdgeInsets.all(10),
-          child: ListView(
-            children: [
-              if (_poll != null)
-                if (_voted)
-                  PollResponses(poll: _poll!)
-                else
-                  PollQuestion(
-                    poll: _poll!,
-                    onVote: () {
-                      _fetchPoll();
-                    },
-                  ),
-            ],
-          ),
-        ),
-      ),
+      body: _fetched
+          ? RefreshIndicator(
+              onRefresh: _fetchPoll,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: ListView(
+                  children: [
+                    if (_poll == null)
+                      Text(
+                        'There is no active poll. Please check back later.',
+                        textAlign: TextAlign.center,
+                      )
+                    else if (_voted)
+                      PollResponses(poll: _poll!)
+                    else
+                      PollQuestion(poll: _poll!, onVote: _fetchPoll),
+                  ],
+                ),
+              ),
+            )
+          : Center(child: CircularProgressIndicator()),
     );
   }
 }
