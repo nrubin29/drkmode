@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:drkmode_app/drk_mode_appbar.dart';
@@ -19,6 +20,7 @@ class _PollPageState extends State<PollPage> {
   var _fetched = false;
   Poll? _poll;
   var _voted = false;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -52,6 +54,9 @@ class _PollPageState extends State<PollPage> {
         _voted = voted;
         _fetched = true;
       });
+
+      _timer?.cancel();
+      _timer = Timer(poll.end.difference(DateTime.now()), _fetchPoll);
     }
   }
 
@@ -91,5 +96,11 @@ class _PollPageState extends State<PollPage> {
             )
           : Center(child: CircularProgressIndicator()),
     );
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 }
