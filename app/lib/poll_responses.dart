@@ -17,7 +17,8 @@ class PollResponses extends StatefulWidget {
 }
 
 class _PollResponsesState extends State<PollResponses> {
-  double _percentVotes(PollOption option) => option.votes / widget.totalVotes;
+  double _percentVotes(PollOption option) =>
+      widget.totalVotes == 0 ? 0 : option.votes / widget.totalVotes;
 
   @override
   Widget build(BuildContext context) => DrkModeCard(

@@ -1,10 +1,9 @@
-import 'dart:ui';
-
-import 'package:date_time_picker/date_time_picker.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:drkmode_app/drk_mode_appbar.dart';
 import 'package:drkmode_app/http_service.dart';
 import 'package:drkmode_common/poll_create.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PollEditor extends StatefulWidget {
   @override
@@ -14,7 +13,7 @@ class PollEditor extends StatefulWidget {
 class _PollEditorState extends State<PollEditor> {
   final _questionController = TextEditingController();
   final _optionControllers = <TextEditingController>[];
-  final _endController = TextEditingController();
+  DateTime? _endTime;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +22,19 @@ class _PollEditorState extends State<PollEditor> {
         actions: [
           IconButton(
             icon: Icon(Icons.send),
-            onPressed: () async {
-              final request = PollCreateRequest(
-                _questionController.text,
-                _optionControllers.map((e) => e.text).toList(growable: false),
-                DateTime.parse(_endController.text),
-              );
-              final response = await createPoll(request);
-              print(response);
-            },
+            onPressed: _endTime != null && _optionControllers.length > 1
+                ? () async {
+                    final request = PollCreateRequest(
+                      _questionController.text,
+                      _optionControllers
+                          .map((e) => e.text)
+                          .toList(growable: false),
+                      _endTime!,
+                    );
+                    final response = await createPoll(request);
+                    print(response);
+                  }
+                : null,
           ),
         ],
       ),
@@ -85,17 +88,39 @@ class _PollEditorState extends State<PollEditor> {
                     ],
                   ),
                 ),
-              DateTimePicker(
-                type: DateTimePickerType.dateTime,
-                use24HourFormat: false,
-                controller: _endController,
-                firstDate: DateTime.now(),
-                lastDate: DateTime.now().add(Duration(days: 30)),
-                locale: PlatformDispatcher.instance.locale,
-                decoration: InputDecoration(
-                  labelText: 'End',
-                  border: OutlineInputBorder(),
-                ),
+              DateTimeField(
+                decoration: InputDecoration(labelText: 'Timestamp'),
+                initialValue: _endTime,
+                format: DateFormat('d MMM yyyy').add_jm(),
+                onShowPicker: (context, currentValue) async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: currentValue ?? DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(Duration(days: 30)),
+                  );
+
+                  if (date != null) {
+                    final time = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(
+                          currentValue ?? DateTime.now()),
+                    );
+
+                    if (time != null) {
+                      return DateTimeField.combine(date, time);
+                    }
+                  }
+
+                  return currentValue;
+                },
+                onChanged: (dateTime) {
+                  if (dateTime != null) {
+                    setState(() {
+                      _endTime = dateTime.toUtc();
+                    });
+                  }
+                },
               ),
             ],
           ),
@@ -107,7 +132,6 @@ class _PollEditorState extends State<PollEditor> {
   @override
   void dispose() {
     _questionController.dispose();
-    _endController.dispose();
 
     for (var optionController in _optionControllers) {
       optionController.dispose();

@@ -86,7 +86,7 @@ class _PollPageState extends State<PollPage> {
                         'There is no active poll. Please check back later.',
                         textAlign: TextAlign.center,
                       )
-                    else if (_voted || (_poll?.isEnded ?? false))
+                    else if (_voted || _poll!.isEnded)
                       PollResponses(poll: _poll!)
                     else
                       PollQuestion(poll: _poll!, onVote: _fetchPoll),

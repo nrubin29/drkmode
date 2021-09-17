@@ -8,7 +8,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  date_time_picker: ^2.1.0
+  datetime_picker_formfield: ^2.0.0
   drkmode_common:
     path: ../common
   flutter:
