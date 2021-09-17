@@ -15,7 +15,7 @@ class PollService {
 
   const PollService(this.database);
 
-  @Route.get('/poll')
+  @Route.get('/get')
   Future<Response> getPoll(Request request) async {
     return Response.ok(json.encode(await _getCurrentPoll()));
   }

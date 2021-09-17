@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:drkmode_app/drk_mode_appbar.dart';
-import 'package:drkmode_common/generic_response.dart';
+import 'package:drkmode_app/http_service.dart';
 import 'package:drkmode_common/poll_create.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 
 class PollEditor extends StatefulWidget {
   @override
@@ -31,17 +29,7 @@ class _PollEditorState extends State<PollEditor> {
                 _optionControllers.map((e) => e.text).toList(growable: false),
                 DateTime.parse(_endController.text),
               );
-
-              final rawResponse = await post(
-                  Uri(
-                      scheme: 'http',
-                      host: 'localhost',
-                      port: 8080,
-                      path: 'create'),
-                  body: json.encode(request.toJson()));
-              final response =
-                  GenericResponse.fromJson(json.decode(rawResponse.body));
-
+              final response = await createPoll(request);
               print(response);
             },
           ),

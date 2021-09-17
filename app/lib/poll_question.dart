@@ -1,11 +1,8 @@
-import 'dart:convert';
-
 import 'package:drkmode_app/card.dart';
-import 'package:drkmode_common/generic_response.dart';
+import 'package:drkmode_app/http_service.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -102,15 +99,7 @@ class _PollQuestionState extends State<PollQuestion> {
                   ? () async {
                       final request =
                           VoteRequest(widget.poll.id, _selection!.value);
-                      final rawResponse = await post(
-                          Uri(
-                              scheme: 'http',
-                              host: 'localhost',
-                              port: 8080,
-                              path: 'vote'),
-                          body: json.encode(request.toJson()));
-                      final response = GenericResponse.fromJson(
-                          json.decode(rawResponse.body));
+                      final response = await vote(request);
 
                       if (response.success) {
                         final sharedPreferences =

@@ -1,13 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:drkmode_app/drk_mode_appbar.dart';
+import 'package:drkmode_app/http_service.dart';
 import 'package:drkmode_app/poll_question.dart';
 import 'package:drkmode_app/poll_responses.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// The page that displays the current poll.
@@ -33,17 +32,14 @@ class _PollPageState extends State<PollPage> {
       _fetched = false;
     });
 
-    final response = await get(
-        Uri(scheme: 'http', host: 'localhost', port: 8080, path: 'poll'));
-    final responseObject = json.decode(response.body);
+    final poll = await getPoll();
 
-    if (responseObject == null) {
+    if (poll == null) {
       setState(() {
         _poll = null;
         _fetched = true;
       });
     } else {
-      final poll = Poll.fromJson(json.decode(response.body));
       final voted =
           ((await SharedPreferences.getInstance()).getStringList('voted') ??
                   const <String>[])
