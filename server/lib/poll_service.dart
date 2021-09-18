@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:drkmode_common/environment.dart';
 import 'package:drkmode_common/generic_response.dart';
 import 'package:drkmode_common/poll_create.dart';
 import 'package:drkmode_common/poll_question.dart';
@@ -37,6 +38,10 @@ class PollService {
   Future<Response> create(Request request) async {
     final createRequest =
         PollCreateRequest.fromJson(json.decode(await request.readAsString()));
+
+    if (createRequest.secretKey != secretKey) {
+      return Response.forbidden(json.encode(GenericResponse(false).toJson()));
+    }
 
     final result = await database.transaction((txn) async {
       final pollId = await txn.insert('Poll', {

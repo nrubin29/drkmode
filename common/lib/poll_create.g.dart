@@ -11,6 +11,7 @@ PollCreateRequest _$PollCreateRequestFromJson(Map<String, dynamic> json) =>
       json['question'] as String,
       (json['options'] as List<dynamic>).map((e) => e as String).toList(),
       DateTime.parse(json['end'] as String),
+      json['secretKey'] as String,
     );
 
 Map<String, dynamic> _$PollCreateRequestToJson(PollCreateRequest instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$PollCreateRequestToJson(PollCreateRequest instance) =>
       'question': instance.question,
       'options': instance.options,
       'end': instance.end.toIso8601String(),
+      'secretKey': instance.secretKey,
     };

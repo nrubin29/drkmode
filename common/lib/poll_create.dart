@@ -7,8 +7,10 @@ class PollCreateRequest {
   final String question;
   final List<String> options;
   final DateTime end;
+  final String secretKey;
 
-  const PollCreateRequest(this.question, this.options, this.end);
+  const PollCreateRequest(
+      this.question, this.options, this.end, this.secretKey);
 
   factory PollCreateRequest.fromJson(Map<String, dynamic> json) =>
       _$PollCreateRequestFromJson(json);

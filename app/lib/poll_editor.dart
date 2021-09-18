@@ -1,6 +1,7 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:drkmode_app/drk_mode_appbar.dart';
 import 'package:drkmode_app/http_service.dart';
+import 'package:drkmode_common/environment.dart';
 import 'package:drkmode_common/poll_create.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -30,6 +31,7 @@ class _PollEditorState extends State<PollEditor> {
                           .map((e) => e.text)
                           .toList(growable: false),
                       _endTime!,
+                      secretKey,
                     );
                     final response = await createPoll(request);
                     print(response);

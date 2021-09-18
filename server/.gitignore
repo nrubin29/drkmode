@@ -10,3 +10,6 @@ doc/api/
 
 # Database
 db.sqlite3
+
+# Run script (contains secret key)
+run.sh
