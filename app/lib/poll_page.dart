@@ -72,7 +72,10 @@ class _PollPageState extends State<PollPage> {
                   _fetchPoll();
                 },
               )
-            : null,
+            : IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: _fetchPoll,
+              ),
       ),
       body: _fetched
           ? RefreshIndicator(
