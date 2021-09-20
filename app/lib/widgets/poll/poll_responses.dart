@@ -24,12 +24,19 @@ class _PollResponsesState extends State<PollResponses> {
   Widget build(BuildContext context) => DrkModeCard(
         title: Row(
           children: [
-            Icon(Icons.poll, color: Colors.black),
+            Icon(
+              Icons.poll,
+              color: Colors.black,
+              size: Theme.of(context).textTheme.headline5!.fontSize,
+            ),
             Expanded(
               child: Text(
                 widget.poll.question,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: Colors.black),
               ),
             ),
           ],
@@ -71,7 +78,10 @@ class _PollResponsesState extends State<PollResponses> {
               padding: EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 '${widget.totalVotes} vote${widget.totalVotes != 1 ? 's' : ''}',
-                style: TextStyle(color: Colors.black),
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle1!
+                    .copyWith(color: Colors.black),
               ),
             )
           ],

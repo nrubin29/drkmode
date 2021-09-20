@@ -21,7 +21,7 @@ class DrkModeCard extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
-              padding: EdgeInsets.all(5),
+              padding: EdgeInsets.all(16),
               child: title,
             ),
           ),
@@ -32,12 +32,12 @@ class DrkModeCard extends StatelessWidget {
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
-              padding: EdgeInsets.only(top: 5),
+              padding: EdgeInsets.all(16),
               child: bottom,
             ),
           if (belowBottom != null)
             Padding(
-              padding: EdgeInsets.only(top: 5),
+              padding: EdgeInsets.only(top: 16),
               child: belowBottom!,
             ),
         ],

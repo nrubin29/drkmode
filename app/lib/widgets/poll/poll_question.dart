@@ -66,12 +66,19 @@ class _PollQuestionState extends State<PollQuestion> {
   Widget build(BuildContext context) => DrkModeCard(
         title: Row(
           children: [
-            Icon(Icons.poll, color: Colors.black),
+            Icon(
+              Icons.poll,
+              color: Colors.black,
+              size: Theme.of(context).textTheme.headline5!.fontSize,
+            ),
             Expanded(
               child: Text(
                 widget.poll.question,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: Colors.black),
               ),
             ),
           ],
@@ -94,36 +101,44 @@ class _PollQuestionState extends State<PollQuestion> {
         bottom: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: _selection != null
-                  ? () async {
-                      final request =
-                          VoteRequest(widget.poll.id, _selection!.value);
-                      final response = await vote(request);
+            Expanded(
+              child: TextButton(
+                onPressed: _selection != null
+                    ? () async {
+                        final request =
+                            VoteRequest(widget.poll.id, _selection!.value);
+                        final response = await vote(request);
 
-                      if (response.success) {
-                        final sharedPreferences =
-                            await SharedPreferences.getInstance();
-                        final voted =
-                            sharedPreferences.getStringList('voted') ??
-                                <String>[];
-                        voted.add('${widget.poll.id}');
-                        await sharedPreferences.setStringList('voted', voted);
-                        widget.onVote();
+                        if (response.success) {
+                          final sharedPreferences =
+                              await SharedPreferences.getInstance();
+                          final voted =
+                              sharedPreferences.getStringList('voted') ??
+                                  <String>[];
+                          voted.add('${widget.poll.id}');
+                          await sharedPreferences.setStringList('voted', voted);
+                          widget.onVote();
+                        }
                       }
-                    }
-                  : null,
-              child: Text(
-                'Vote',
-                style: TextStyle(color: Colors.black),
-              ),
-              style: ButtonStyle(
-                overlayColor:
-                    MaterialStateProperty.all(Colors.black.withOpacity(.25)),
+                    : null,
+                child: Text(
+                  'Vote',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline6!
+                      .copyWith(color: Colors.black),
+                ),
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all(Colors.black.withOpacity(.25)),
+                ),
               ),
             ),
           ],
         ),
-        belowBottom: Text('Poll ends in $_timeLeft.'),
+        belowBottom: Text(
+          'Poll ends in $_timeLeft.',
+          style: Theme.of(context).textTheme.subtitle1,
+        ),
       );
 }
