@@ -1,6 +1,7 @@
 import 'package:drkmode_app/widgets/base/card.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 /// Displays the responses for a [Poll].
 class PollResponses extends StatefulWidget {
@@ -19,6 +20,12 @@ class PollResponses extends StatefulWidget {
 class _PollResponsesState extends State<PollResponses> {
   double _percentVotes(PollOption option) =>
       widget.totalVotes == 0 ? 0 : option.votes / widget.totalVotes;
+
+  String _votes(PollOption option) => Intl.plural(
+        option.votes,
+        one: '${option.votes} vote',
+        other: '${option.votes} votes',
+      );
 
   @override
   Widget build(BuildContext context) => DrkModeCard(
@@ -63,8 +70,8 @@ class _PollResponsesState extends State<PollResponses> {
                     ListTile(
                       visualDensity: VisualDensity.compact,
                       title: Text(option.value),
-                      trailing:
-                          Text('${(_percentVotes(option) * 100).round()}%'),
+                      trailing: Text('${_votes(option)} • '
+                          '${(_percentVotes(option) * 100).round()}%'),
                     ),
                   ],
                 ),
