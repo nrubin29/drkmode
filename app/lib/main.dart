@@ -1,4 +1,4 @@
-import 'package:drkmode_app/home.dart';
+import 'package:drkmode_app/widgets/home.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

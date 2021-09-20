@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:drkmode_app/drk_mode_appbar.dart';
 import 'package:drkmode_app/http_service.dart';
-import 'package:drkmode_app/poll_question.dart';
-import 'package:drkmode_app/poll_responses.dart';
+import 'package:drkmode_app/widgets/base/drk_mode_appbar.dart';
+import 'package:drkmode_app/widgets/poll/poll_question.dart';
+import 'package:drkmode_app/widgets/poll/poll_responses.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

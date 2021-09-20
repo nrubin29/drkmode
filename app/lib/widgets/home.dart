@@ -1,5 +1,5 @@
-import 'package:drkmode_app/poll_editor.dart';
-import 'package:drkmode_app/poll_page.dart';
+import 'package:drkmode_app/widgets/editor/poll_editor.dart';
+import 'package:drkmode_app/widgets/poll/poll_page.dart';
 import 'package:drkmode_common/environment.dart';
 import 'package:flutter/material.dart';
 

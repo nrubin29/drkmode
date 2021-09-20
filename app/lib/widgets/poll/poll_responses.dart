@@ -1,4 +1,4 @@
-import 'package:drkmode_app/card.dart';
+import 'package:drkmode_app/widgets/base/card.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:flutter/material.dart';
 

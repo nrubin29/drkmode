@@ -1,5 +1,5 @@
-import 'package:drkmode_app/card.dart';
 import 'package:drkmode_app/http_service.dart';
+import 'package:drkmode_app/widgets/base/card.dart';
 import 'package:drkmode_common/poll_question.dart';
 import 'package:drkmode_common/vote_request.dart';
 import 'package:flutter/material.dart';
