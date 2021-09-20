@@ -27,10 +27,12 @@ class _PollPageState extends State<PollPage> {
     _fetchPoll();
   }
 
-  Future<void> _fetchPoll() async {
-    setState(() {
-      _fetched = false;
-    });
+  Future<void> _fetchPoll({bool showLoadingIndicator = true}) async {
+    if (showLoadingIndicator) {
+      setState(() {
+        _fetched = false;
+      });
+    }
 
     final poll = await getPoll();
 
@@ -55,7 +57,12 @@ class _PollPageState extends State<PollPage> {
       _timer = null;
 
       if (!poll.isEnded) {
-        _timer = Timer(poll.end.difference(DateTime.now()), _fetchPoll);
+        if (voted) {
+          _timer = Timer.periodic(Duration(seconds: 10),
+              (_) => _fetchPoll(showLoadingIndicator: false));
+        } else {
+          _timer = Timer(poll.end.difference(DateTime.now()), _fetchPoll);
+        }
       }
     }
   }
