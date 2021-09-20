@@ -34,7 +34,15 @@ class _PollEditorState extends State<PollEditor> {
                       secretKey,
                     );
                     final response = await createPoll(request);
-                    print(response);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          response.success
+                              ? 'Successfully created poll!'
+                              : 'An error occurred.',
+                        ),
+                      ),
+                    );
                   }
                 : null,
           ),
